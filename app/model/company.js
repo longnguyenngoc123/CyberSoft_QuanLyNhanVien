@@ -33,6 +33,47 @@ class Company {
         return this.employees[index];
     }
 
+    filter(type) {
+        let newList = [];
+        if (type === "Tất cả") {
+            return this.employees;
+        }
+        for(let i = 0; i < this.employees.length; i++) {
+            if(this.employees[i].rank === type) {
+                newList.push(this.employees[i]);
+            }
+        }
+        return newList;
+    }
+
+    search(keyword) {
+        let newList = [];
+        if (keyword === null || keyword === "") {
+            return this.employees;
+        }
+        for(let i = 0; i < this.employees.length; i++) {
+            if(this.employees[i].name.toLowerCase().includes(keyword.toLowerCase())) {
+                newList.push(this.employees[i]);
+            }
+        }
+        return newList;
+    }
+    
+    searchAndFilter(type, keyword) {
+        let newList = [];
+        for(let i = 0; i < this.employees.length; i++) {
+            let isValid = true;
+            isValid &= type === "Tất cả" || this.employees[i].rank === type;
+            isValid &= (keyword === "" || keyword === null) || 
+            this.employees[i].name.toLowerCase().includes(keyword.toLowerCase());
+            
+            if(isValid) {
+                newList.push(this.employees[i]);
+            }
+        }
+        
+        return newList;
+    }
     
 
 }

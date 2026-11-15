@@ -31,7 +31,7 @@ getElementById("btnThemNV").onclick = function() {
     if (employee !== null) {
         employeeList.addEmployee(employee);
         addToLocalStorage(employeeList.employees);
-        renderEmployeeList();
+        renderEmployeeList(employeeList.employees);
     }
 }
 
@@ -57,13 +57,12 @@ function getLocalStorage() {
     const data = JSON.parse(localStorage.getItem("EMPLOYEE"));
     if (data !== null) {
         employeeList.employees = data;
-        renderEmployeeList();
+        renderEmployeeList(employeeList.employees);
     }
     
 }
 
-function renderEmployeeList() {
-    let employees = employeeList.employees;
+function renderEmployeeList(employees) {
     let content = "";
     if (employees !== null) {
             for(let i = 0; i < employees.length; i++) {
@@ -92,7 +91,7 @@ function renderEmployeeList() {
 function handleDelete(tk) {
     employeeList.deleteEmployee(tk);
     addToLocalStorage(employeeList.employees);
-    renderEmployeeList();
+    renderEmployeeList(employeeList.employees);
 }
 
 function handleEdit(tk) {
@@ -119,7 +118,7 @@ getElementById("btnCapNhat").onclick = function() {
     let employee = getEmployee(true);
     employeeList.editEmployee(employee.tk, employee);
     addToLocalStorage(employeeList.employees);
-    renderEmployeeList();
+    renderEmployeeList(employeeList.employees);
 }
 
 function validateEmployee(tk, name, email, password, workDay, salary, position, workHours, isUpdate) {
@@ -152,7 +151,24 @@ function validateEmployee(tk, name, email, password, workDay, salary, position, 
     validation.checkIfNumber(workHours, "tbGiolam", "(*) Gio lam phai la so") &&
     validation.checkIfCorrectValue(workHours, "tbGiolam", "(*) Gio lam khong hop le", 80, 200);
     return isValid;
-} 
+}
+
+getElementById("loai").addEventListener("change", function() {
+    const type = getElementById("loai").value;
+    const keyword = getElementById("searchName").value;
+    const listFilter = employeeList.searchAndFilter(type, keyword);
+    renderEmployeeList(listFilter);
+})
+
+getElementById("searchName").addEventListener("keyup", function() {
+    const type = getElementById("loai").value;
+    const keyword = getElementById("searchName").value;
+    const listFilter = employeeList.searchAndFilter(type, keyword);
+    renderEmployeeList(listFilter);
+})
+
+
+
 
 getLocalStorage();
 
